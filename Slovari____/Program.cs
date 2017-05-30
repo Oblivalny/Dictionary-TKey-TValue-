@@ -152,7 +152,7 @@ namespace Slovar
             Dictionary<string, int> slovari = new Dictionary<string, int>();
 
             Array.Sort(word);
-            //unic.Sort();
+            unic.Sort();
 
 
 
