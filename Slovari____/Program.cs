@@ -5,37 +5,127 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Slovari____
+namespace Slovar
 {
     class Program
     {
-        private static void BubbleSort(List<int> array)
+        private static string[] BubbleSort(string[] array)
         {
-            for (int i = 0; i < array.LongCount(); i++)
-                for (int j = 0; j < array.LongCount() - 1; j++)
-                    if (array[j] > array[j + 1])
+            for (int i = 0; i < array.Length - 1; i++)
+                for (int j = 0; j < array.Length - 2; j++)
+
+                    if (string.Compare(array[i], array[i + 1]) > 0)
                     {
-                        int t = array[j + 1];
+                        string t = array[j + 1];
                         array[j + 1] = array[j];
                         array[j] = t;
                     }
+            return array;
+        }
+
+
+
+
+        private static string[] Perestanovka(string[] word, int i)
+        {
+            string t = word[i + 1];
+            word[i + 1] = word[i];
+            word[i] = t;
+            return word;
+        }
+
+        private static string[] xxx(string[] word, int k, int lon, int count, string a, string b)
+        {
+            for (int j = 0; j < lon; j++)
+            {
+                count = 0;
+                char v = a[j];
+                char m = b[j];
+                if (v > m)
+                {
+                    word = Perestanovka(word, k);
+                    count++;
+                    break;
+                }
+                if (v < m)
+                {
+                    count++;
+                    break;
+                }
+
+            }
+            if (count == 0)
+            {
+                word = Perestanovka(word, k);
+            }
+            else
+            {
+                count = 0;
+            }
+            return word;
+        }
+
+        private static string[] Comperer(string[] word)
+        {
+            for (int i = 0; i < word.Length - 1; i++)
+            {
+
+                for (int k = 0; k < word.Length - 1; k++)
+                {
+
+                    string a = word[k];
+                    string b = word[k + 1];
+
+                    if (word[k].Length < word[k + 1].Length)
+                    {
+                        int count = 0;
+                        word = xxx(word, k, word[k].Length, count, a, b);
+
+                    }
+
+                    if (word[k].Length > word[k + 1].Length)
+                    {
+                        int count = 0;
+                        word = xxx(word, k, word[k + 1].Length, count, a, b);
+
+                    }
+
+
+
+                    if (word[k].Length == word[k + 1].Length)
+                    {
+
+                        for (int j = 0; j < word[k].Length; j++)
+                        {
+
+                            char v = a[j];
+                            char m = b[j];
+                            if (v > m)
+                            {
+                                word = Perestanovka(word, k);
+                                break;
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return word;
         }
 
         static void Main(string[] args)
         {
             string text = File.ReadAllText(@"C:\Users\днс\Desktop\text.txt");
             text = text.ToLower();
- 
+
             List<string> unic = new List<string>();
-            
-
-            string[] word = (text.Split(new char[] { '-', '(',')', '\'', '\r',' ','\t','.',',','\n','"','!','?', ',' },StringSplitOptions.None));
 
 
-
+            string[] word = (text.Split(new char[] { '-', '(', ')', '\'', '\r', ' ', '\t', '.', ',', '\n', '"', '!', '?', ',' }, StringSplitOptions.None));
 
             int count = 0;
-            for (int i = 0; i <word.Length; i++)
+            for (int i = 0; i < word.Length; i++)
             {
                 count = 0;
 
@@ -49,17 +139,23 @@ namespace Slovari____
 
                 if (count == 0)
                 {
-                    if (word[i]!="")
+                    if (word[i] != "")
                     {
                         unic.Add(word[i]);
                     }
-                    
+
                 }
 
             }
 
 
             Dictionary<string, int> slovari = new Dictionary<string, int>();
+
+            Array.Sort(word);
+            //unic.Sort();
+
+
+
 
             for (int i = 0; i < unic.LongCount(); i++)
             {
@@ -76,7 +172,11 @@ namespace Slovari____
 
             foreach (var e in slovari)
                 Console.WriteLine(e);
-          
+
+            foreach (var item in word)
+            {
+                Console.WriteLine(item);
+            }
 
             Console.ReadKey();
 
